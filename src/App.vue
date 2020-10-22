@@ -1,18 +1,16 @@
 <template>
   <div id="app">
-   <HelloWorld />
-   <!-- <Movies /> -->
+   <HelloWorld /> 
   </div>
+ 
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-// import Movies from './components/Movies.vue'
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    // Movies
   }
 }
 </script>
@@ -24,6 +22,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /* margin-top: 60px; */
 }
 </style>

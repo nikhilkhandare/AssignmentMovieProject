@@ -3,44 +3,22 @@
     <div class="header">
       <a href="#default" class="logo">Movies</a>
       <div class="header-right">
-        <a class="active" id="myBtn" href="#">Add Movies</a>
+        <a class="active"  id="myBtn" href="#">Add Movies</a>
       </div>
     </div> 
-     
-    <!-- <div class="columns is-multiline" > -->
-         <!-- <template>
-            < <div id="movie" class="a"> -->
-               
-            <!-- </div> -->
-        <!-- </template> -->
-        <div v-for="mov in movies" :key="mov.id" class="column is-one-third"  > 
-          <br>
-          <br>
-          <!-- //onclick="movieSelected('{{mov.imdbID}}')" -->
-                <!-- <div class="container"> -->
-           
-            <!-- <a href="#" onClick="showStuff()" ><img  :src="mov.Poster" style="display: inline-block" /></a>
-            <div id="hidden" style="display: none"><p @onclick="showMovie('{{mov.imdbID}}')"
-            
-            >Movie Name : {{mov.Title}},<br> Movie Year : {{mov.Year}}</p> 
-          </div> -->
-           
-           <!-- <a href="#" @click="getmovies()"><img :src="mov.Poster" style="display: inline-block"></a> -->
-
-         
-             <a href="##" @click="showMovie(mov.imdbID)"><img :src="mov.Poster" class= "a" style="display: inline-block">
-             </a>
-          
-           
-            
-
-        <h5>{{mov.Title}}</h5>
-      
-      </div>
-      <div id="hidden" style="display: none" class="a"><div id="movie"></div></div>
-    
-
-
+    <div v-for="mov in movies" :key="mov.id" class="column is-one-third" > 
+      <br>
+      <br>
+          <a href="##" @click="showMovie(mov.imdbID)" ><img :src="mov.Poster" id="movie" style="display: inline-block" >
+          </a>
+          <h5>{{mov.Title}}</h5>
+    </div>
+    <div class="column is-one-third" style="display: inline-block">
+      <br>
+      <br>
+      <img v-bind:src=imgURL id="movie"> 
+      <h5>{{ Moviename }}</h5>
+    </div>
     <div id="myModal" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
@@ -51,7 +29,7 @@
             <label for="fname">Movie Name</label>
           </div>
           <div class="col-75">
-            <input type="text" id="fname" name="Moviename" placeholder="Enter Movie name.." />
+            <input type="text" id="fname" v-model="Moviename" placeholder="Enter Movie name.." />
           </div>
         </div>
         <div class="row">
@@ -59,100 +37,50 @@
             <label for="lname">Movie URL</label>
           </div>
           <div class="col-75">
-            <input type="text" id="lname" name="MovieURL" placeholder="Enter Movie URL">
+            <input type="text" id="lname" v-model="imgURL" placeholder="Enter Movie URL">
           </div>
         </div>
-        <div class="row">
-          <div class="col-25">
-            <label for="subject">Summary</label>
-          </div>
-          <div class="col-75">
-            <textarea id="subject" name="subject" placeholder="Movie Summary.." style="height:100px"></textarea>
-          </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
 import axios from 'axios'
-// import $ from 'jquery'
-
-// import $ from 'jquery'
-// let $ = jquery,
 export default {   
   data(){
       return  {
         movies:null,
-       
+        Moviename :'',
+        imgURL :'',
       }
+     
   },
   methods : {
        showMovie(id) {
        sessionStorage.setItem('movieId', id);
         let movieId = sessionStorage.getItem('movieId');
          axios.get('http://www.omdbapi.com/?i='+movieId+'&apikey=9be27fce').then(
-  (response) => {
+  (response) => 
+  {
     let movie = response.data;
-    
-      var output = `
-      <div class="row">
-        <h6>${movie.Title}</h6>
+      var output =` 
+      Movie Title : ${movie.Title}
+      Movie Year  : ${movie.Year}
+      Movie Type  : ${movie.Type}
     `;
-   document.querySelector('#movie').innerHTML = output;
-    console.log(output);
+   alert(document.querySelector('#movie').innerHTML = output);
   }
-);
-        //  axios.get('http://www.omdbapi.com?i='+movieId).then((response)=>{
-        // console.log(response);
-        //  });
-
-      //  window.location = '';
-      //  return false;
-  //      var movies = response.data.Search;
-  //    $(document).ready(function(){
-  //   $('#myImg').click(function(){
-     
-  //   });
-
-  //  });   
-    },
-     showStuff()  {
-  let hidden = document.getElementById('hidden');
-  if (hidden.style.display == "none") {
-    hidden.style.display = "block"
-  } else {
-    hidden.style.display = "none"
-  }
-}
-
-    // getmovies(){
-    //   let movieId = sessionStorage.getItem('movieId');
-    //   console.log(movieId);
-    //   // axios.get('http://www.omdbapi.com/?s='+movieId).then((response)=>{
-    //   //   console.log(response);
-    //   // });
-    // }
-   
-
+  );  
   },
- 
-  
+  },
   mounted(){
-    // this.$root.$on('HelloWorld',()=>{this.showMovie})
     axios.get('http://www.omdbapi.com/?s=harry potter&apikey=e0620bd4')
     .then(response =>(this.movies = response.data.Search))
   },
-
-
 }
-
 </script>
-
 <style scoped>
-
-
 .popup {
   position: relative;
   display: inline-block;
@@ -162,8 +90,6 @@ export default {
   -ms-user-select: none;
   user-select: none;
 }
-
-/* The actual popup */
 .popup .popuptext {
   visibility: hidden;
   width: 160px;
@@ -178,8 +104,6 @@ export default {
   left: 50%;
   margin-left: -80px;
 }
-
-/* Popup arrow */
 .popup .popuptext::after {
   content: "";
   position: absolute;
@@ -190,15 +114,11 @@ export default {
   border-style: solid;
   border-color: #555 transparent transparent transparent;
 }
-
-/* Toggle this class - hide and show the popup */
 .popup .show {
   visibility: visible;
   -webkit-animation: fadeIn 1s;
   animation: fadeIn 1s;
 }
-
-/* Add animation (fade in the popup) */
 @-webkit-keyframes fadeIn {
   from {opacity: 0;} 
   to {opacity: 1;}
@@ -208,10 +128,6 @@ export default {
   from {opacity: 0;}
   to {opacity:1 ;}
 }
-
-
-
-/*original*/
 input[type=text], select, textarea {
   width: 90%;
   padding: 12px;
@@ -257,14 +173,12 @@ input[type=submit]:hover {
   margin-top: 6px;
 }
 
-/* Clear floats after the columns */
 .row:after {
   content: "";
   display: table;
   clear: both;
 }
 
-/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 600px) {
   .col-25, .col-75, input[type=submit] {
     width: 100%;
@@ -278,7 +192,6 @@ input[type=submit]:hover {
   align-content: center;
   grid-template-columns: auto auto auto;
   grid-gap: 15px;
-  /* background-color: #2196F3; */
   padding: 40px;
 }
 
@@ -354,44 +267,20 @@ img {
   width: 300px;
   border-radius: 8px;
 }
-/* #myInput {
-  background-image: url('/css/searchicon.png');
-  background-position: 10px 12px;
-  background-repeat: no-repeat;
-  width: 90%;
-  font-size: 16px;
-  padding: 12px 20px 12px 40px;
-  border: 1px solid #ddd;
-  margin-bottom: 12px;
-} */
-
-/* * {
-  box-sizing: border-box;
-} */
-
-/* body {
-  font-family: Arial, Helvetica, sans-serif;
-} */
-
-/* Float four columns side by side */
 .column {
   float: left;
   width: 25%;
-  /* padding: 50 50px; */
- 
 }
 
-/* Remove extra left and right margins, due to padding */
 .row {margin: 0 -5px;}
 
-/* Clear floats after the columns */
+
 .row:after {
   content: "";
   display: table;
   clear: both;
 }
 
-/* Responsive columns */
 @media screen and (max-width: 600px) {
   .column {
     width: 100%;
@@ -400,38 +289,26 @@ img {
   }
 }
 
-/* Style the counter cards */
-/* .card {
-  box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2);
-  padding: 1px;
-  text-align: center;
-  background-color: #f1f1f1;
-} */
-
 h5{
   font-family: Georgia, 'Times New Roman', Times, serif ;
-  /* font-style: oblique; */
-   color : #DC143C;
-   
-  
+   color : #DC143C; 
 }
 
 
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  padding-top: 100px; 
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
 }
 
-/* Modal Content */
 .modal-content {
   background-color: #fefefe;
   margin: auto;
