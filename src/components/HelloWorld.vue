@@ -34,7 +34,7 @@
            
             
 
-        <h5>{{mov.Title}}</h5>
+        <!-- <h5>{{mov.Title}}</h5> -->
       
       </div>
       <div id="hidden" style="display: none" class="a"><div id="movie"></div></div>
